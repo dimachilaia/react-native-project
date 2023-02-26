@@ -7,7 +7,6 @@ import {
   TextInput,
   View,
   ScrollView,
-  ImageBackground,
 } from "react-native";
 import { useState } from "react";
 
@@ -15,12 +14,13 @@ export default function App() {
   const [info, setInfo] = useState("");
   const [data, setData] = useState([]);
 
-  const handlePress = () => {
-    console.log("Button pressed!");
+  const AddItemHandler = () => {
+    setData([...data, info]);
+    setInfo("");
   };
-
-  const PressHandler = () => {};
-
+  const InputHandler = (event) => {
+    setInfo(event.target.value);
+  };
   return (
     <View style={styles.appContainer}>
       <TextInput
@@ -33,20 +33,29 @@ export default function App() {
         returnKeyType="done"
         blurOnSubmit={false}
         onChangeText={setInfo}
+        onChange={InputHandler}
         value={info}
       />
       <Button
         title="Add Your Goal!"
-        onPress={handlePress}
+        onPress={AddItemHandler}
         style={styles.button}
       />
+      <ScrollView style={styles.scrollview}>
+        {data.map((item, index) => {
+          return (
+            <View key={index}>
+              <Text style={styles.addedData}>{item}</Text>
+            </View>
+          );
+        })}
+      </ScrollView>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   appContainer: {
-    flex: 1,
     padding: 50,
     paddingHorizontal: 16,
   },
@@ -60,5 +69,11 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     fontSize: 18,
     color: "#333",
+  },
+  scrollview: {
+    flexGrow: 1,
+  },
+  addedData: {
+    fontSize: 22,
   },
 });
