@@ -1,58 +1,64 @@
-import { Button, StyleSheet, Text, TextInput, View } from "react-native";
+import backgroundImg from "./src/images/img.jpg";
+
+import {
+  Button,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+  ScrollView,
+  ImageBackground,
+} from "react-native";
 import { useState } from "react";
 
 export default function App() {
-  const [enteredGoalText, setEnteredGoalText] = useState("");
-  const [courseGoals, setCourseGoals] = useState([]);
+  const [info, setInfo] = useState("");
+  const [data, setData] = useState([]);
 
-  const goalInputHandler = (enteredText) => {
-    setEnteredGoalText(enteredText);
+  const handlePress = () => {
+    console.log("Button pressed!");
   };
 
-  const addGoalHandler = () => {
-    setCourseGoals((currentCourseGoals) => [
-      ...currentCourseGoals,
-      enteredGoalText,
-    ]);
-  };
+  const PressHandler = () => {};
 
   return (
     <View style={styles.appContainer}>
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.textInput}
-          placeholder="Enter Something"
-          onChangeText={goalInputHandler}
-        />
-        <Button title="Add Goal" onPress={addGoalHandler} />
-      </View>
-      <View style={styles.goalsContainer}>
-        {courseGoals.map((goal, index) => (
-          <Text key={index}>{goal}</Text>
-        ))}
-      </View>
+      <TextInput
+        style={styles.textinput}
+        placeholder="Enter your name"
+        placeholderTextColor="#b0b0b0"
+        keyboardType="default"
+        autoCapitalize="words"
+        autoCompleteType="name"
+        returnKeyType="done"
+        blurOnSubmit={false}
+        onChangeText={setInfo}
+        value={info}
+      />
+      <Button
+        title="Add Your Goal!"
+        onPress={handlePress}
+        style={styles.button}
+      />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   appContainer: {
+    flex: 1,
     padding: 50,
     paddingHorizontal: 16,
   },
-  inputContainer: {
-    flex: 3,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    paddingBottom: 24,
-    borderBottomWidth: 1,
-    borderBottomColor: "#cccccc",
-  },
-  textInput: {
+  textinput: {
+    height: 50,
+    paddingHorizontal: 16,
+    borderRadius: 8,
     borderWidth: 1,
-    borderColor: "#cccccc",
-    width: "70%",
-    marginRight: 8,
+    borderColor: "#b0b0b0",
+    backgroundColor: "#f0f0f0",
+    marginBottom: 16,
+    fontSize: 18,
+    color: "#333",
   },
-  goalsContainer: {},
 });
