@@ -1,5 +1,3 @@
-import backgroundImg from "./src/images/img.jpg";
-
 import {
   Button,
   StyleSheet,
@@ -7,55 +5,53 @@ import {
   TextInput,
   View,
   ScrollView,
+  FlatList,
 } from "react-native";
 import { useState } from "react";
+import GoalItem from "./src/components/GoalItem";
 
 export default function App() {
-  const [info, setInfo] = useState("");
-  const [data, setData] = useState([]);
+  const [enteredGoalText, setEnteredGoalText] = useState("");
+  const [courseGoals, setCourseGoals] = useState([]);
 
-  const AddItemHandler = () => {
-    setData([...data, info]);
-    setInfo("");
+  const goalInputHandler = (enteredtext) => {
+    setEnteredGoalText(enteredtext);
   };
-  const InputHandler = (event) => {
-    setInfo(event.target.value);
+
+  const addGoalHandler = () => {
+    setCourseGoals((currentCourseGoals) => [
+      ...currentCourseGoals,
+      { text: enteredGoalText, key: Math.random().toString() },
+    ]);
   };
+
   return (
     <View style={styles.appContainer}>
-      <TextInput
-        style={styles.textinput}
-        placeholder="Enter your name"
-        placeholderTextColor="#b0b0b0"
-        keyboardType="default"
-        autoCapitalize="words"
-        autoCompleteType="name"
-        returnKeyType="done"
-        blurOnSubmit={false}
-        onChangeText={setInfo}
-        onChange={InputHandler}
-        value={info}
-      />
-      <Button
-        title="Add Your Goal!"
-        onPress={AddItemHandler}
-        style={styles.button}
-      />
-      <ScrollView style={styles.scrollview}>
-        {data.map((item, index) => {
-          return (
-            <View key={index}>
-              <Text style={styles.addedData}>{item}</Text>
-            </View>
-          );
-        })}
-      </ScrollView>
+      <View style={styles.inputContainer}>
+        <TextInput
+          style={styles.textinput}
+          placeholder="Enter your goal!"
+          onChangeText={goalInputHandler}
+        />
+        <Button title="Add Goal" onPress={addGoalHandler} />
+      </View>
+
+      <View style={styles.goalsContainer}>
+        <FlatList
+          data={courseGoals}
+          renderItem={(itemData) => {
+            return <GoalItem text={itemData.item.text} />;
+          }}
+          alwaysBounceHorizontal={false}
+        />
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   appContainer: {
+    flex: 1,
     padding: 50,
     paddingHorizontal: 16,
   },
@@ -67,13 +63,20 @@ const styles = StyleSheet.create({
     borderColor: "#b0b0b0",
     backgroundColor: "#f0f0f0",
     marginBottom: 16,
+    marginTop: 15,
     fontSize: 18,
     color: "#333",
   },
-  scrollview: {
-    flexGrow: 1,
+  goalsContainer: {
+    flex: 5,
   },
-  addedData: {
-    fontSize: 22,
+  inputContainer: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 24,
+    borderBottomWidth: 1,
+    borderBottomColor: "#ccccc",
   },
 });
